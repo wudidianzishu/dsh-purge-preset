@@ -2,9 +2,9 @@
 
 [English](README.en.md) | 中文
 
+[![release](https://img.shields.io/github/v/release/wudidianzishu/dsh-purge-preset?color=2da44e)](https://github.com/wudidianzishu/dsh-purge-preset/releases)
 ![license](https://img.shields.io/badge/license-MIT-3da639)
 ![dsh](https://img.shields.io/badge/dsh-0.2.1--rc.2-24292f)
-![channel](https://img.shields.io/badge/channel-official%20preset-0969da)
 ![prompt](https://img.shields.io/badge/prompt-34%2C084%20bytes-8250df)
 
 > **给 dsh 换一个脑子，不换它的手脚。**
