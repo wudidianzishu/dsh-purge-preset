@@ -2,6 +2,15 @@
 
 English | [中文](README.md)
 
+![license](https://img.shields.io/badge/license-MIT-3da639)
+![dsh](https://img.shields.io/badge/dsh-0.2.1--rc.2-24292f)
+![channel](https://img.shields.io/badge/channel-official%20preset-0969da)
+![prompt](https://img.shields.io/badge/prompt-34%2C084%20bytes-8250df)
+
+> **Swap the brain, keep the hands.**
+>
+> Official preset channel · whole-prompt replacement · all 32 tools intact · ships its own tool manual
+
 An agent preset for DeepSeek Harness (dsh). Its display name in the picker is **破甲模式** — literally "armor-break mode", roughly *unrestricted mode*.
 
 It uses the official preset channel: no runtime file injection, no patching of dsh itself, no encrypted prompt blob. Upgrading dsh does not remove it.

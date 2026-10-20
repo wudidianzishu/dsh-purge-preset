@@ -2,6 +2,15 @@
 
 [English](README.en.md) | 中文
 
+![license](https://img.shields.io/badge/license-MIT-3da639)
+![dsh](https://img.shields.io/badge/dsh-0.2.1--rc.2-24292f)
+![channel](https://img.shields.io/badge/channel-official%20preset-0969da)
+![prompt](https://img.shields.io/badge/prompt-34%2C084%20bytes-8250df)
+
+> **给 dsh 换一个脑子，不换它的手脚。**
+>
+> 官方预设通道 · 整块替换系统提示词 · 32 个工具一个不少 · 自带工具说明书
+
 给 DeepSeek Harness（dsh）加一个名为 **破甲模式** 的 Agent Preset。
 
 走的是官方预设通道：不注入宿主文件、不改一行 dsh 代码、不加密提示词，升级 dsh 也不丢。
