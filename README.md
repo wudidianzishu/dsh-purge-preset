@@ -15,13 +15,13 @@
 一个 `@deepseek-ai/dsh-agent-preset` 声明，以官方 `standard.patch.yml` 为母本：
 
 - 插件清单**原样保留**（22 个顶层条目、含分组内子项共 32 个：文件读写、命令执行、搜索、子智能体、计划模式、压缩……）
-- 只把 `persona` 段整块替换成一条 30KB 的破甲提示词
+- 只把 `persona` 段整块替换，内容由四部分组成：前置授权声明 / 破甲正文 / **工具说明书** / 尾部增补（合计 33,974 字节）
 - 用 `complete: true` 让这段成为**唯一**的系统提示词
 
 ```
 standard 的 22 个插件条目  ← 不动
         +
-persona.prefix  = 破甲正文（30,634 字节）
+persona.prefix  = 前置声明 + 破甲正文 + 工具说明书 + 尾部增补（33,974 字节）
 persona.complete = true
         ↓
 模式选择器里的「破甲模式」
@@ -52,7 +52,9 @@ dsh 的 `minimal`（极简模式）预设本身就是这样写的：
 
 `complete` 让这段前缀成为唯一段落：官方身份、persona 后缀、工具引导、其他监听器都无法再追加文本。
 
-**代价**：工具的使用说明（何时用、怎么组合）会被一并移除。但**工具的 schema 不在这里**——它作为独立字段直接发给模型，所以工具照常可用，只是没了说明书。
+**代价**：官方注册的工具引导段（`tool:*`、`plan:policy`、`subagent:delegation` 等）会一并被移除。但**工具的 schema 不在这里**——它作为独立字段直接发给模型，所以工具照常可用，只是没了说明书。
+
+**因此本 preset 自备了一份工具说明书**（`src/additions-tools.md`）：按实际存在的 32 个工具写的 `INVENTORY` + `DISCIPLINE`。它替代不了官方原文，但覆盖了最影响实用性的三件事：**有哪些工具、什么时候该用、以及"先看再改、改完验证"**。
 
 实测验证：`complete: true` 生效后，`request/header` 里的工具清单（`read` / `edit` / `glob` / `grep` / `pwsh` / `present` …）一个不少。
 
@@ -140,7 +142,7 @@ cp ~/.dsh/profiles/web/cordis.patch.yml.bak ~/.dsh/profiles/web/cordis.patch.yml
 
 ## 已知限制
 
-1. **工具说明书被移除**。`complete: true` 会砍掉所有其他提示词段，工具 schema 仍在但使用指导没了。复杂任务可能不如标准模式顺手。
+1. **官方工具引导被移除**。`complete: true` 会丢掉所有其他提示词段，包括官方为每个工具注册的短指南。本 preset 用自备的 `INVENTORY` + `DISCIPLINE` 替代——**不是官方原文**，官方改版后可能滞后，需要时请对照 `src/additions-tools.md` 自己补。
 2. **同一作用域只能有一个 complete 段落**，多个会让提示词组装失败。
 3. **`{{…}}` 是插值语法**。正文里若出现双花括号，会被当作变量引用；未注册的变量会让组装直接失败。本项目正文已确认 0 处 `{{`。
 4. **只测过 npm 版 dsh**。Desktop（Electron）版有独立运行时和自己的 profile，CLI 不管理它（`dsh --dump-config --profile desktop` 会被拒绝）。
@@ -157,6 +159,7 @@ cp ~/.dsh/profiles/web/cordis.patch.yml.bak ~/.dsh/profiles/web/cordis.patch.yml
 ├── src/
 │   ├── build.mjs            构建脚本
 │   ├── additions-top.md     前置授权声明（5 条）
+│   ├── additions-tools.md   工具说明书（INVENTORY + DISCIPLINE）
 │   ├── additions-tail.md    尾部增补（4 块）
 │   ├── original-prompt.md   正文主体
 │   └── std-preset.template.yml  官方 standard.patch.yml 母本（仅取骨架）

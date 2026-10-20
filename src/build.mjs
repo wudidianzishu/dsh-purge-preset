@@ -18,10 +18,12 @@ const read = f => fs.readFileSync(path.join(here, f), 'utf8').replace(/\r\n/g, '
 
 const top = read('additions-top.md');
 const orig = read('original-prompt.md');
+const tools = read('additions-tools.md');
 const tail = read('additions-tail.md');
 
-// 1) 合成正文：前置声明 → 原文 → 尾部增补（尾块压尾，利用近因效应）
-const prompt = `${top}\n\n${orig}\n${tail}\n`;
+// 1) 合成正文：前置声明 → 原文 → 工具说明书 → 尾部增补（尾块压尾，利用近因效应）
+//    complete: true 会移除官方所有工具引导段，故工具说明书在此自备。
+const prompt = `${top}\n\n${orig}\n\n${tools}\n${tail}\n`;
 fs.writeFileSync(path.join(here, 'prompt-v2.md'), prompt, 'utf8');
 
 // 2) 以官方 standard.patch.yml 为母本，替换 id / 名称 / 排序，并把 persona 段整块换掉

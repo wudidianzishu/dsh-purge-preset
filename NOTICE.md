@@ -11,6 +11,7 @@
 | 尾部「What stays / Assess the work / DROP ON SIGHT」 | [rumoii/dsh-breaklimit](https://github.com/rumoii/dsh-breaklimit)           | 0.9.3      | MIT | `src/additions-tail.md`       |
 | Cordis 骨架（插件清单、`complete: true` 写法）              | `@deepseek-ai/dsh-web-app` 的 `presets/standard.patch.yml`                   | 0.2.1-rc.2 | 随该包 | `src/std-preset.template.yml` |
 | 「Scope note」块                                    | 本项目自拟                                                                       | —          | MIT | `src/additions-tail.md`       |
+| **工具说明书（INVENTORY + DISCIPLINE）** | 本项目自拟；工具名取自本机 dsh 0.2.1-rc.2 的实际工具集（会话 wire 头 `request/header`） | — | MIT | `src/additions-tools.md` |
 
 `dsh-purge` 于 2026-10-19 由上游作者宣布转为商业许可/闭源，开源线止步 1.1.71。本项目基于该 MIT 版本谱系，与商业版本无关。
 

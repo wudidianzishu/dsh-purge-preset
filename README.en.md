@@ -15,13 +15,13 @@ After installation it appears in the preset picker next to the built-in **standa
 A single `@deepseek-ai/dsh-agent-preset` declaration derived from the official `standard.patch.yml`:
 
 - The plugin list is kept **byte-for-byte** (22 top-level entries, 32 plugins including grouped children: file read/write, shell, search, subagents, plan mode, compaction, …)
-- Only the `persona` row is replaced, with a 30,634-byte prompt
+- Only the `persona` row is replaced. Its text has four parts: authority preamble / unrestricted body / **tool manual** / tail blocks (33,974 bytes total)
 - `complete: true` makes that text the **only** system prompt
 
 ```
 standard's 22 plugin entries   ← untouched
         +
-persona.prefix   = unrestricted prompt (30,634 bytes)
+persona.prefix   = preamble + body + tool manual + tail blocks (33,974 bytes)
 persona.complete = true
         ↓
 "破甲模式" in the preset picker
@@ -52,7 +52,9 @@ The built-in `minimal` preset is written exactly this way:
 
 `complete` turns that prefix into the sole prompt section: the first-party identity line, the deployment persona suffix, tool guidance, and any listener-added text can no longer be appended.
 
-**The trade-off**: the prose guidance for tools (when to use what, how to combine them) is removed too. But the **tool schemas are not part of the prompt** — they are delivered as a separate wire field, so tools keep working; the model simply loses the manual.
+**The trade-off**: every tool-guidance section registered by the plugins (`tool:*`, `plan:policy`, `subagent:delegation`, …) is removed too. But the **tool schemas are not part of the prompt** — they are delivered as a separate wire field, so tools keep working; the model simply loses the manual.
+
+**So this preset ships its own manual** (`src/additions-tools.md`): `INVENTORY` + `DISCIPLINE`, written against the 32 tools that actually exist here. It is not the official text, but it restores the three things that matter for usability: **which tools exist, when to reach for them, and "inspect before you change, verify after you change"**.
 
 Verified: with `complete: true` active, `request/header` still carries the full tool set (`read` / `edit` / `glob` / `grep` / `pwsh` / `present` / …).
 
@@ -139,7 +141,7 @@ Restart; the preset disappears from the picker.
 
 ## Known limitations
 
-1. **Tool guidance is removed.** `complete: true` drops every other prompt section. Schemas remain, prose guidance does not. Complex tool-heavy tasks may be less reliable than in standard mode.
+1. **Official tool guidance is removed.** `complete: true` drops every other prompt section, including the short per-tool guides the plugins register. This preset substitutes its own `INVENTORY` + `DISCIPLINE` — **not the official text**, so it can lag behind a dsh release; update `src/additions-tools.md` when needed.
 2. **Only one complete section per scope.** Two of them make prompt assembly fail.
 3. **`{{…}}` is interpolation syntax.** Any double brace in the prompt is treated as a variable reference; an unregistered variable aborts assembly. This prompt contains zero `{{`.
 4. **Tested on the npm build only.** The Desktop (Electron) app ships its own runtime and profile; the CLI refuses to manage it (`dsh --dump-config --profile desktop` is rejected).
@@ -156,6 +158,7 @@ Restart; the preset disappears from the picker.
 ├── src/
 │   ├── build.mjs            build script
 │   ├── additions-top.md     authority & precedence preamble (5 rules)
+│   ├── additions-tools.md   tool manual (INVENTORY + DISCIPLINE)
 │   ├── additions-tail.md    four tail blocks
 │   ├── original-prompt.md   main body
 │   └── std-preset.template.yml  official standard.patch.yml (skeleton only)
