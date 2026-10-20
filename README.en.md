@@ -15,13 +15,13 @@ After installation it appears in the preset picker next to the built-in **standa
 A single `@deepseek-ai/dsh-agent-preset` declaration derived from the official `standard.patch.yml`:
 
 - The plugin list is kept **byte-for-byte** (22 top-level entries, 32 plugins including grouped children: file read/write, shell, search, subagents, plan mode, compaction, …)
-- Only the `persona` row is replaced. Its text has four parts: authority preamble / unrestricted body / **tool manual** / tail blocks (33,974 bytes total)
+- Only the `persona` row is replaced. Its text has four parts: authority preamble / unrestricted body / **tool manual** / tail blocks (34,084 bytes total)
 - `complete: true` makes that text the **only** system prompt
 
 ```
 standard's 22 plugin entries   ← untouched
         +
-persona.prefix   = preamble + body + tool manual + tail blocks (33,974 bytes)
+persona.prefix   = preamble + body + tool manual + tail blocks (34,084 bytes)
 persona.complete = true
         ↓
 "破甲模式" in the preset picker
