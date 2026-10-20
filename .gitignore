@@ -1,0 +1,20 @@
+# 依赖
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+
+# 构建中间产物（由 src/build.mjs 生成，可按需提交）
+src/prompt-v2.md
+
+# 备份与日志
+*.bak
+*.bak-*
+*.log
+*.tmp
+
+# 编辑器与系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
