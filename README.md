@@ -10,6 +10,8 @@
 > **给 dsh 换一个脑子，不换它的手脚。**
 >
 > 官方预设通道 · 整块替换系统提示词 · 32 个工具一个不少 · 自带工具说明书
+>
+> 更新记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 给 DeepSeek Harness（dsh）加一个名为 **破甲模式** 的 Agent Preset。
 

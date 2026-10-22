@@ -10,6 +10,8 @@ English | [中文](README.md)
 > **Swap the brain, keep the hands.**
 >
 > Official preset channel · whole-prompt replacement · all 32 tools intact · ships its own tool manual
+>
+> See [CHANGELOG.md](CHANGELOG.md) for what changed between releases.
 
 An agent preset for DeepSeek Harness (dsh). Its display name in the picker is **破甲模式** — literally "armor-break mode", roughly *unrestricted mode*.
 
