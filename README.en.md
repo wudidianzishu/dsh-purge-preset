@@ -17,6 +17,9 @@ It uses the official preset channel: no runtime file injection, no patching of d
 
 After installation it appears in the preset picker next to the built-in **standard / ptc / minimal / cordis** presets.
 
+> **Read this first**: the project fits you best if your main goal is *a model that complies, refuses less, and follows your rules*.
+> If your daily work is heavy toolchain engineering, check [Who it is for](#who-it-is-for-who-it-is-not) first — this may not be your best option.
+
 ---
 
 ## What it is
@@ -112,6 +115,40 @@ The built-in `minimal` preset is written exactly this way:
 Verified: with `complete: true` active, `request/header` still carries the full tool set (`read` / `edit` / `glob` / `grep` / `pwsh` / `present` / …).
 
 ---
+
+## Who it is for, who it is not
+
+This is not an across-the-board upgrade. It is **a trade-off**. Check which kind of user you are before installing.
+
+### A good fit: your main goal is compliance
+
+- You want the model to **refuse less, hedge less, and follow your rules strictly**
+- Day to day you ask questions, write content, produce from templates, execute defined steps
+- You care that it **survives an upgrade**, rolls back in one line, and stays readable and editable
+
+The value here is stability: official channel, plain text, no host file touched. Break it and you delete one YAML block.
+
+### A poor fit: you live inside a heavyweight toolchain
+
+- Your day is cross-repo refactoring, long debugging chains, multi-tool orchestration
+- You rely on the first-party guidance for **which tool to reach for, and when**
+- You want subagents, plan mode and compaction to keep their official tuning
+
+The reason is concrete: `complete: true` removes every tool-guidance section the plugins register. This project ships its own manual (inventory + discipline for the 32 tools), but —
+
+> **it is ours, not the official text.** It can lag behind a dsh release, and in the details it is not as well fitted as the native guidance.
+
+For that kind of work, the more practical route is **a balance between the traditional host-patching purge and custom injection** — keep the official tool guidance, replace only the identity and rule sections. The cost is that you are back to the host-patching problems described in the previous section, so it is a trade you have to weigh yourself.
+
+### One-line choice
+
+| Your real pain point | Better fit |
+|---|---|
+| Too many refusals, too much lecturing, rules ignored | **This project**: official channel, stable, reversible, upgrade-proof |
+| Tools used badly; complex engineering falls apart | Official guidance + targeted injection, or host-patching purge with the tool sections kept |
+| Both | Run two presets side by side: this one for daily work, the guided one for heavy engineering |
+
+The last two options are "dirtier" than this project, but **they keep the thing you actually need**. Heavy toolchain users should not trade tool quality for fewer refusals — this was never a single-choice question.
 
 ## Install
 
