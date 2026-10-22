@@ -46,6 +46,50 @@ persona.complete = true
 | Writing to `$DSH_HOME/.agent-presets/` | **That directory is no longer read by 0.2.x** — unused here |
 | Replacing the whole profile | Appends one preset declaration |
 
+## Why not a plugin: what I measured
+
+This project borrows dsh-purge's **prompt** (MIT). It does not borrow its **approach** — that one works by patching host files; this one uses the official preset channel.
+
+How big the difference is, measured once on `0.2.1-rc.2` (method and numbers reproducible):
+
+| Item | Count |
+|---|---|
+| Files differing from the official npm package | **40** |
+| Of those, carrying the author's `[dsh-purge]` marker | 39 |
+| **Carrying no marker at all** | **1** |
+| Diff size (the 39 marked files) | **+330 / −192 lines** |
+
+The silent one is `dsh-web-app/cordis.patch.yml`:
+
+```diff
+ - id: system-prompt
+   config:
+-    personaPrefix: >-
+-      You are a coding agent powered by the {{model}} model.
++    personaPrefix: ""
+```
+
+That is a **deployment-level** identity line, applied to every preset. It goes further than that — each preset's own `prefix` was emptied as well:
+
+| Preset | Before | After |
+|---|---|---|
+| standard | `You are a coding agent powered by the {{model}} model.` | `""` |
+| ptc | same | `""` |
+| minimal | `You are a helpful software engineer assistant.` | `""` |
+| cordis | (multi-line identity block) | `""` |
+
+Counting the deployment-level line, **not a single identity line survives anywhere in the web app** — and none of it is searchable, because no marker was written.
+
+Three consequences follow:
+
+1. **An upgrade erases it** — `npm i -g @deepseek-ai/dsh@latest` wipes all 40 changes at once. Reinstalling the same version does not help either: npm sees an identical version and skips file replacement (measured: all 39 markers survived).
+2. **The changes are not auditable** — the author's own markers do not cover everything. The only reliable way to find out what changed is to hash-compare against the official tarballs.
+3. **Presets contaminate each other** — the host is what got patched, and "standard mode" is on the list. Want a clean A/B between this preset and standard? Standard is no longer stock.
+
+This project touches no host file, so none of the above applies: upgrade dsh to any version and the preset is still in `~/.dsh/profiles/web/cordis.patch.yml`. Delete that YAML block and you are back to stock.
+
+> In fairness: patching the host was the most direct route to whole-prompt replacement, and before the official preset channel matured it was close to the only one. Both routes have costs. This section reports measurements, not motives.
+
 ## Why `complete: true`
 
 The built-in `minimal` preset is written exactly this way:

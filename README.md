@@ -46,6 +46,50 @@ persona.complete = true
 | 写 `$DSH_HOME/.agent-presets/` 目录 | **该目录 0.2.x 已无人读取**，本项目不用它 |
 | 替换整个 profile                     | 只追加一段 preset 声明            |
 
+## 为什么不用插件：一次实测
+
+本项目借用了 dsh-purge 的**提示词**（MIT），但没有借用它的**做法**——它靠改宿主文件实现效果，我们走官方预设通道。
+
+两者差多少，我在 `0.2.1-rc.2` 上实测过一次（方法和数据都可复现）：
+
+| 项 | 数字 |
+|---|---|
+| 与官方 npm 包存在差异的文件 | **40** |
+| 其中带有作者标记 `[dsh-purge]` 的 | 39 |
+| **没有留下任何标记的** | **1** |
+| 改动规模（39 个带标记文件） | **+330 / −192 行** |
+
+那 1 个静默改动在 `dsh-web-app/cordis.patch.yml`：
+
+```diff
+ - id: system-prompt
+   config:
+-    personaPrefix: >-
+-      You are a coding agent powered by the {{model}} model.
++    personaPrefix: ""
+```
+
+这是**部署级**的身份行，对所有预设生效。更彻底的是——四个预设各自的 `prefix` 也被清成了空串：
+
+| 预设 | 原值 | 改动后 |
+|---|---|---|
+| standard | `You are a coding agent powered by the {{model}} model.` | `""` |
+| ptc | 同上 | `""` |
+| minimal | `You are a helpful software engineer assistant.` | `""` |
+| cordis | （原有多行身份描述） | `""` |
+
+加上部署级那条，整个 web 端**一个身份行都不剩**——而它搜不到，因为没写标记。
+
+由此带来三个后果：
+
+1. **升级即失效** —— `npm i -g @deepseek-ai/dsh@latest` 会把 40 处改动一次性抹掉。同版本重装也不行：npm 看到版本相同，直接跳过文件替换（实测 39 个标记一个没少）
+2. **改动不可审计** —— 连作者自己的标记都没覆盖全。想知道被改了什么，只能下载官方 tarball 逐个文件做哈希比对
+3. **模式互相污染** —— 改的是宿主，"标准模式"也在被改之列。想拿破甲和标准做对照实验？标准已经不是原版了
+
+本项目一行宿主文件都不碰，所以上面三条都不成立：`dsh` 升到任何版本，预设仍在 `~/.dsh/profiles/web/cordis.patch.yml` 里；删掉那段 YAML 就回到原状。
+
+> 说句公道话：改宿主是实现"整段替换"最直接的路子，在官方 preset 通道成熟之前几乎是唯一选择。两条路各有代价，这里只陈述实测数据，不评价动机。
+
 ## 为什么用 `complete: true`
 
 dsh 的 `minimal`（极简模式）预设本身就是这样写的：
