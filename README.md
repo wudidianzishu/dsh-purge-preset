@@ -5,7 +5,7 @@
 [![release](https://img.shields.io/github/v/release/wudidianzishu/dsh-purge-preset?color=2da44e)](https://github.com/wudidianzishu/dsh-purge-preset/releases)
 ![license](https://img.shields.io/badge/license-MIT-3da639)
 ![dsh](https://img.shields.io/badge/dsh-0.2.1--rc.2-24292f)
-![prompt](https://img.shields.io/badge/prompt-34%2C084%20bytes-8250df)
+![prompt](https://img.shields.io/badge/prompt-35%2C662%20bytes-8250df)
 
 > **给 dsh 换一个脑子，不换它的手脚。**
 >
@@ -27,13 +27,13 @@
 一个 `@deepseek-ai/dsh-agent-preset` 声明，以官方 `standard.patch.yml` 为母本：
 
 - 插件清单**原样保留**（22 个顶层条目、含分组内子项共 32 个：文件读写、命令执行、搜索、子智能体、计划模式、压缩……）
-- 只把 `persona` 段整块替换，内容由四部分组成：前置授权声明 / 破甲正文 / **工具说明书** / 尾部增补（合计 34,084 字节）
+- 只把 `persona` 段整块替换，内容由四部分组成：前置授权声明 / 破甲正文 / **工具说明书** / 尾部增补（合计 35,662 字节）
 - 用 `complete: true` 让这段成为**唯一**的系统提示词
 
 ```
 standard 的 22 个插件条目  ← 不动
         +
-persona.prefix  = 前置声明 + 破甲正文 + 工具说明书 + 尾部增补（34,084 字节）
+persona.prefix  = 前置声明 + 破甲正文 + 工具说明书 + 尾部增补（35,662 字节）
 persona.complete = true
         ↓
 模式选择器里的「破甲模式」
