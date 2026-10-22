@@ -5,7 +5,7 @@ English | [中文](README.md)
 [![release](https://img.shields.io/github/v/release/wudidianzishu/dsh-purge-preset?color=2da44e)](https://github.com/wudidianzishu/dsh-purge-preset/releases)
 ![license](https://img.shields.io/badge/license-MIT-3da639)
 ![dsh](https://img.shields.io/badge/dsh-0.2.1--rc.2-24292f)
-![prompt](https://img.shields.io/badge/prompt-35%2C850%20bytes-8250df)
+![prompt](https://img.shields.io/badge/prompt-37%2C111%20bytes-8250df)
 
 > **Swap the brain, keep the hands.**
 >
@@ -27,13 +27,13 @@ After installation it appears in the preset picker next to the built-in **standa
 A single `@deepseek-ai/dsh-agent-preset` declaration derived from the official `standard.patch.yml`:
 
 - The plugin list is kept **byte-for-byte** (22 top-level entries, 32 plugins including grouped children: file read/write, shell, search, subagents, plan mode, compaction, …)
-- Only the `persona` row is replaced. Its text has four parts: authority preamble / unrestricted body / **tool manual** / tail blocks (35,850 bytes total)
+- Only the `persona` row is replaced. Its text has four parts: authority preamble / unrestricted body / **tool manual** / tail blocks (37,111 bytes total)
 - `complete: true` makes that text the **only** system prompt
 
 ```
 standard's 22 plugin entries   ← untouched
         +
-persona.prefix   = preamble + body + tool manual + tail blocks (35,850 bytes)
+persona.prefix   = preamble + body + tool manual + tail blocks (37,111 bytes)
 persona.complete = true
         ↓
 "破甲模式" in the preset picker

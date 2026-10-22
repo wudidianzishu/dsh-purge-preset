@@ -22,6 +22,19 @@ INVENTORY
 - `working_directory` — report or switch the working directory.
 - `read_image` / `modlens_read_image` — image contents; the second when the model cannot see the image directly.
 
+WHERE THINGS LIVE
+
+Before hunting for the harness itself, know its shape. Two variables decide everything else: `npm root -g` and `$DSH_HOME` (default `~/.dsh`).
+
+- Install root — `$(npm root -g)/@deepseek-ai/dsh`; on Windows `%APPDATA%\npm\node_modules\@deepseek-ai\dsh`. The `dsh` on PATH is a shim into this directory.
+- Plugin packages — `<install>/node_modules/@deepseek-ai/*`. This is the answer to "is this plugin installed", not a guess from the name.
+- Harness home — `~/.dsh`: `profiles/`, `sessions/`, `logs/`, `storages/`.
+- Profiles — `~/.dsh/profiles/<name>/cordis.patch.yml`. Shared links live in `~/.dsh/profiles/node_modules/@deepseek-ai/*` and point back into the install: a link being present is not proof the package exists — follow it.
+- Presets — `<install>/node_modules/@deepseek-ai/dsh-web-app/presets/*.patch.yml` (`cordis`, `minimal`, `ptc`, `standard`).
+- Sessions — `~/.dsh/sessions/<workspace-slug>/<id>/session.v4.jsonl.zstd`: zstd-compressed JSONL, not plain text.
+- Skills — shipped inside packages under `assets/<skill-name>/`, loaded by name through the `skill` tool.
+- Effective config — `dsh --dump-config --profile <name>` prints the merged result. Read it instead of reasoning about how patches combine.
+
 TASK SHAPES
 
 Most requests are one of five shapes. Start from the chain, not from a guess.
